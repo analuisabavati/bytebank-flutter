@@ -20,10 +20,38 @@ class TransferForm extends StatefulWidget {
 }
 
 class _TransferFormState extends State<TransferForm> {
+  bool _isValueFieldValid = false;
+  bool _isAccountFieldValid = false;
+  bool _isValueFieldDirty = false;
+  bool _isAccountFieldDirty = false;
+
   final TextEditingController _accountNumberFieldController =
-      TextEditingController();
+  TextEditingController();
 
   final TextEditingController _valueFieldController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _accountNumberFieldController.addListener(() {
+      _validateFields();
+    });
+    _valueFieldController.addListener(() {
+      _validateFields();
+    });
+  }
+
+  bool _isFormValid() {
+    return _isValueFieldValid && _isAccountFieldValid;
+  }
+
+  _validateFields() {
+    setState(() {
+      _isAccountFieldValid =
+          int.tryParse(_accountNumberFieldController.text) != null;
+      _isValueFieldValid = int.tryParse(_valueFieldController.text) != null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +67,17 @@ class _TransferFormState extends State<TransferForm> {
               label: 'Account number',
               hint: '0000',
               autofocus: true,
+              onChanged: (value) => _isValueFieldDirty = true,
+              hasError: _isValueFieldDirty && !_isValueFieldDirty,
             ),
             Editor(
-                controller: _valueFieldController,
-                label: 'Value',
-                hint: '0000',
-                icon: Icons.monetization_on),
+              controller: _valueFieldController,
+              label: 'Value',
+              hint: '0000',
+              icon: Icons.monetization_on,
+              onChanged: (value) => _isValueFieldDirty = true,
+              hasError: _isValueFieldDirty && !_isValueFieldDirty,
+            ),
             RaisedButton(
               child: Text('Confirm'),
               onPressed: () => _createdTransfer(context),
@@ -61,7 +94,7 @@ class _TransferFormState extends State<TransferForm> {
 
     if (accountNumber != null && value != null) {
       final transferCreated =
-          Transfer(accountNumber: accountNumber, value: value);
+      Transfer(accountNumber: accountNumber, value: value);
       debugPrint('$transferCreated');
       Navigator.pop(context, transferCreated);
     }
@@ -83,12 +116,13 @@ class Editor extends StatelessWidget {
   final IconData icon;
   final bool autofocus;
 
-  const Editor(
-      {@required this.controller,
-      @required this.label,
-      @required this.hint,
-      this.autofocus,
-      this.icon});
+  const Editor({@required this.controller,
+    @required this.label,
+    @required this.hint,
+    this.autofocus,
+    this.icon,
+    bool Function(String) onChanged,
+    bool hasError});
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +157,6 @@ class TransferList extends StatefulWidget {
 class TransfersListState extends State<TransferList> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: ListView.builder(
           itemCount: widget._transfers.length,
@@ -138,13 +171,13 @@ class TransfersListState extends State<TransferList> {
         child: Icon(Icons.add),
         onPressed: () {
           final Future future =
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
             return TransferForm();
           }));
           future.then((transferReceived) {
             debugPrint('Future');
             debugPrint('$transferReceived');
-            if(transferReceived != null) {
+            if (transferReceived != null) {
               setState(() {
                 widget._transfers.add(transferReceived);
               });
