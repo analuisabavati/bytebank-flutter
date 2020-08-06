@@ -1,26 +1,43 @@
-import 'package:bytebank/screens/transfer/form.dart';
 import 'package:bytebank/screens/transfer/list.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-void main() => runApp(ByteBankApp());
+void main() => runApp(BytebankApp());
 
-class ByteBankApp extends StatelessWidget {
+class BytebankApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var transferFormWidget = TransferForm();
-
-    return MaterialApp(
-      home: Scaffold(
-        body: TransferList(),
-      ),
-      theme: ThemeData(
-        primaryColor: Colors.red[900],
-        accentColor: Colors.red[700],
-        buttonTheme: ButtonThemeData(
-          buttonColor: Colors.red[200],
-          textTheme: ButtonTextTheme.primary,
-        )
+    return new ScopedModel<DarkModeModel>(
+      model: new DarkModeModel(),
+      child: new ScopedModelDescendant<DarkModeModel>(
+        builder: (context, child, model) => MaterialApp(
+          theme: model.darkmode ? ThemeData.dark() : defaultTheme(),
+          home: Scaffold(
+            body: TransferList(),
+          ),
+        ),
       ),
     );
   }
+}
+
+class DarkModeModel extends Model {
+  bool darkmode = false;
+
+  void toggle() {
+    darkmode = !darkmode;
+    debugPrint('Dark mode is now $darkmode');
+    notifyListeners();
+  }
+}
+
+ThemeData defaultTheme() {
+  return ThemeData(
+    primaryColor: Colors.green[900],
+    accentColor: Colors.blueAccent[700],
+    buttonTheme: ButtonThemeData(
+      buttonColor: Colors.blueAccent[700],
+      textTheme: ButtonTextTheme.primary,
+    ),
+  );
 }

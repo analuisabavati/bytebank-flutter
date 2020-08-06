@@ -24,6 +24,14 @@ class TransfersListState extends State<TransferList> {
           }),
       appBar: AppBar(
         title: Text('Transfers'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.lightbulb_outline),
+            onPressed: () {
+              debugPrint('bulb');
+            },
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
