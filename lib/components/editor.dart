@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class Editor extends StatelessWidget {
@@ -10,10 +9,10 @@ class Editor extends StatelessWidget {
 
   const Editor(
       {@required this.controller,
-        @required this.label,
-        @required this.hint,
-        this.autofocus,
-        this.icon});
+      @required this.label,
+      @required this.hint,
+      this.autofocus,
+      this.icon});
 
   @override
   Widget build(BuildContext context) {

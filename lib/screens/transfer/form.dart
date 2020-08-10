@@ -1,4 +1,3 @@
-
 import 'package:bytebank/components/editor.dart';
 import 'package:bytebank/models/transfer.dart';
 import 'package:flutter/material.dart';
@@ -56,8 +55,7 @@ class _TransferFormState extends State<TransferForm> {
     final double value = double.tryParse(_valueFieldController.text);
 
     if (accountNumber != null && value != null) {
-      final transferCreated =
-      Transfer(accountNumber: accountNumber, value: value);
+      final transferCreated = Transfer(accountNumber: accountNumber, value: value);
       debugPrint('$transferCreated');
       Navigator.pop(context, transferCreated);
     }

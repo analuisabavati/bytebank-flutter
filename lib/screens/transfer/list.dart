@@ -1,4 +1,3 @@
-
 import 'package:bytebank/models/transfer.dart';
 import 'package:bytebank/screens/transfer/form.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +27,7 @@ class TransfersListState extends State<TransferList> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          final Future future =
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
+          final Future future = Navigator.push(context, MaterialPageRoute(builder: (context) {
             return TransferForm();
           }));
           future.then((transferReceived) {
@@ -46,7 +44,6 @@ class TransfersListState extends State<TransferList> {
     );
   }
 }
-
 
 class TransferItem extends StatelessWidget {
   final Transfer _transfer;
