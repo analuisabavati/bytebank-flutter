@@ -1,13 +1,8 @@
-import 'package:bytebank/screens/contacts/form.dart';
-import 'package:bytebank/screens/contacts/list.dart';
 import 'package:bytebank/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
-import 'database/app_database/app_datebase.dart';
-
 void main() {
   runApp(ByteBankApp());
-  createDatabase();
 }
 
 class ByteBankApp extends StatelessWidget {
